@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Theme from "../../components/Theme/Theme";
 import * as C from "./styles";
@@ -5,11 +6,28 @@ import { FormActions, useForm } from "../../contexts/FormContext";
 
 const Step1 = () => {
   const navigate = useNavigate();
-
   const { state, dispatch } = useForm();
 
+  React.useEffect(() => {
+    dispatch({
+      type: FormActions.setCurrentStep,
+      payload: 1,
+    });
+  }, []);
+
   function handleNextStep() {
-    navigate("/step2");
+    if (state.name !== "") {
+      navigate("/step2");
+    } else {
+      alert("Please fill in all fields to complete your registration");
+    }
+  }
+
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    dispatch({
+      type: FormActions.setName,
+      payload: e.target.value,
+    });
   }
 
   return (
@@ -23,7 +41,12 @@ const Step1 = () => {
 
         <label htmlFor="name">
           Name
-          <input type="text" autoFocus />
+          <input
+            type="text"
+            autoFocus
+            value={state.name}
+            onChange={handleNameChange}
+          />
         </label>
         <button onClick={handleNextStep}>Next</button>
       </C.Container>
