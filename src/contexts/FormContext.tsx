@@ -1,6 +1,24 @@
-import React, { useContext } from "react";
+import React from "react";
 
-const initialData = {
+type State = {
+  currentStep: number;
+  name: string;
+  level: 0 | 1;
+  email: string;
+  gitHub: string;
+};
+
+type Action = {
+  type: FormActions;
+  payload: any;
+};
+
+type ContextType = {
+  state: State;
+  dispatch: (action: Action) => void;
+};
+
+const initialData: State = {
   currentStep: 0,
   name: "",
   level: 0,
@@ -8,9 +26,9 @@ const initialData = {
   gitHub: "",
 };
 
-const FormContext = React.createContext(null);
+const FormContext = React.createContext<ContextType | null>(null);
 
-enum FormActions {
+export enum FormActions {
   setCurrentStep,
   setName,
   setLevel,
@@ -18,7 +36,7 @@ enum FormActions {
   setGitHub,
 }
 
-const formReducer = (state, action) => {
+const formReducer = (state: State, action: Action) => {
   switch (action.type) {
     case FormActions.setCurrentStep:
       return { ...state, currentStep: action.payload };
@@ -35,19 +53,19 @@ const formReducer = (state, action) => {
   }
 };
 
-const FormProvider = ({ children }) => {
-  const [state, dispatch] = React.useReducer(formReducer, initialData);
-
-  const value = { state, dispatch };
-
-  return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
-};
-
-const useForm = () => {
-  const context = useContext(FormContext);
+export const useForm = () => {
+  const context = React.useContext(FormContext);
 
   if (context === null) {
     throw new Error("useForm must be inside of FormProvider");
   }
   return context;
+};
+
+export const FormProvider = ({ children }: React.PropsWithChildren) => {
+  const [state, dispatch] = React.useReducer(formReducer, initialData);
+
+  const value = { state, dispatch };
+
+  return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };
