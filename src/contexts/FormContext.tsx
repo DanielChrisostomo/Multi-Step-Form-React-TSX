@@ -53,6 +53,14 @@ const formReducer = (state: State, action: Action) => {
   }
 };
 
+export const FormProvider = ({ children }: React.PropsWithChildren) => {
+  const [state, dispatch] = React.useReducer(formReducer, initialData);
+
+  const value = { state, dispatch };
+
+  return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
+};
+
 export const useForm = () => {
   const context = React.useContext(FormContext);
 
@@ -60,12 +68,4 @@ export const useForm = () => {
     throw new Error("useForm must be inside of FormProvider");
   }
   return context;
-};
-
-export const FormProvider = ({ children }: React.PropsWithChildren) => {
-  const [state, dispatch] = React.useReducer(formReducer, initialData);
-
-  const value = { state, dispatch };
-
-  return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };

@@ -17,7 +17,6 @@ export const Area = styled.div`
 export const Steps = styled.div`
   flex: 1;
   display: flex;
-
 `
 
 export const Sidebar = styled.div`
