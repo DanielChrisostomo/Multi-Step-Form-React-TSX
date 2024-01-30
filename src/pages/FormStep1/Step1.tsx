@@ -35,7 +35,7 @@ const Step1 = () => {
       <C.Container>
         <p>Step 1/3</p>
         <h1>Let's start</h1>
-        <p>Fill the field with your first and second name</p>
+        <p>Please, fill the field with your first and second name</p>
 
         <hr />
 

@@ -13,12 +13,17 @@ const Step2 = () => {
   React.useEffect(() => {
     if (state.name === "") {
       navigate("/");
+    } else {
+      dispatch({
+        type: FormActions.setCurrentStep,
+        payload: 2,
+      });
     }
   }, []);
 
   function handleNextStep() {
     if (state.name !== "") {
-      navigate("/step2");
+      navigate("/step3");
     } else {
       alert("Please fill in all fields to complete your registration");
     }
